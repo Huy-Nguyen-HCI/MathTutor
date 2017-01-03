@@ -25,8 +25,9 @@ class IntProductionRules:
         assert False, "shouldn't get here"
 
 
+    # preCalculatedInt: used for partial int algorithm
     @classmethod
-    def getIntegral( self, productionRuleString, func1, func2 ):
+    def getIntegral( self, productionRuleString, func1, func2, preCalculatedInt = None ):
         if productionRuleString == "plus":
             return plus( func1.getIntegral(), func2.getIntegral() )
 
@@ -41,11 +42,9 @@ class IntProductionRules:
             return compose( func1.getIntegral(), func2 )
 
         if productionRuleString == "partialInt":
-            assert func1.getDerivative() is not None
-            partial = times( func1.getDerivative(), func2 )
-            partial =  parse_expr( partial.toString() )
-            int = manualintegrate( partial, x )
-            return minus( times(func1, func2), Function(str(int)) )
+            assert preCalculatedInt is not None
+            print( "h is: ", preCalculatedInt.toString() )
+            return minus( times(func1, func2), preCalculatedInt )
 
         assert False, "unrecognized production rule: " + productionRuleString
 

@@ -14,6 +14,8 @@ class Node:
 		self.right = None
 		self.parent = None
 		self.complexity = complexity
+		# save partial int result (the h in our algorithm) so that we don't have to manualintegrate again
+		self.partialIntResultHolder = None
 
 
 	def setValue( self, holder ):
@@ -56,6 +58,14 @@ class Node:
 
 	def setComplexity( self, comp ):
 		self.complexity = comp
+
+
+	def setPartialIntResult( self, partialInt ):
+		self.partialIntResultHolder = partialInt
+
+
+	def getPartialIntResult(self):
+		return self.partialIntResultHolder
 
 
 	# Get the complexity of the subtree rooted at this node

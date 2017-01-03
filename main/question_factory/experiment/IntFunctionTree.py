@@ -52,7 +52,7 @@ class IntFunctionTree(FunctionTree):
             h = productTree.getOutputFunction()
 
             # construct v where diff v is known
-            rightTree = DiffFunctionTree.buildTreeWithMaxComplexity( 3 )
+            rightTree = DiffFunctionTree.buildTreeWithMaxComplexity( 5 )
             v = rightTree.getOutputFunction()
             vDerivative = v.getDerivative()
             assert vDerivative is not None
@@ -60,7 +60,7 @@ class IntFunctionTree(FunctionTree):
             # construct u = int ( h / v )
             uDerivative = divide( h, v )
             u = manualintegrate( parse_expr( uDerivative.toString() ), x )
-            print("generated u: ", u)
+            print("generated h: ", h.toString())
 
             if not Function.isIntegrable( u ) or not Function.meetsComplexityBound( u, 40 ):
                 continue
@@ -70,6 +70,7 @@ class IntFunctionTree(FunctionTree):
             leftFunction.setDerivative( uDerivative )
             leftChild.setValue( leftFunction )
             rightChild.setValue( v )
+            leftChild.getParent().setPartialIntResult( h.getIntegral() )
             break
 
 
@@ -84,8 +85,9 @@ class IntFunctionTree(FunctionTree):
             result = production( leftFunction, rightFunction )
 
             # get the integral
-            integral = IntProductionRules.getIntegral( production.__name__, leftFunction, rightFunction )
-            result.setIntegral( integral )
+            preCalculatedInt = node.getPartialIntResult()
+            integral = IntProductionRules.getIntegral( production.__name__, leftFunction, rightFunction, preCalculatedInt )
+            result.setIntegral(integral)
             return result
 
 
@@ -93,6 +95,7 @@ class IntFunctionTree(FunctionTree):
     @classmethod
     def buildTreeWithMaxComplexity( cls, complexity, usePartialInt ):
         iteration = 0
+
         tree = IntFunctionTree( complexity )
 
         while tree.getComplexity() < complexity and iteration < 20:
