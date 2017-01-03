@@ -60,3 +60,29 @@ class Function:
 	@classmethod
 	def evaluate(self, funcString, number):
 		return N(parse_expr(funcString).subs(symbols("x"),  number))
+
+	@classmethod
+	def isIntegrable( cls, expression):
+		for args in preorder_traversal(expression):
+			if isinstance(args, Integral) or str(args) == "zoo":
+				return False
+		return True
+
+	@classmethod
+	def meetsComplexityBound( cls, expression, complexityBound ):
+		complexity = 0
+		for arg in preorder_traversal(expression):
+			complexity += cls.getOperatorComplexity(arg.func)
+		return complexity < complexityBound
+
+	@classmethod
+	# convert an instance of sympy operator class to a number representing its complexity
+	def getOperatorComplexity( cls, operator):
+		if str(operator) == "<class 'sympy.core.add.Add'>":
+			return 1
+		elif str(operator) == "<class 'sympy.core.mul.Mul'>":
+			return 2
+		elif str(operator) == "<class 'sympy.core.power.Pow'>":
+			return 8
+		else:
+			return 0

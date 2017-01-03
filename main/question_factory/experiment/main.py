@@ -10,7 +10,7 @@ from sympy.integrals.manualintegrate import manualintegrate
 from sympy.abc import x
 
 for i in range(1):
-    tree = IntFunctionTree.buildTreeWithMaxComplexity( 5, True )
+    tree = IntFunctionTree.buildTreeWithMaxComplexity( 3, True )
     tree.printTree()
     func =  tree.getOutputFunction()
     integral = func.getIntegral()
@@ -25,18 +25,11 @@ for i in range(1):
     print("The value of the integral for x = 5 is: ")
     print(Function.evaluate( integral.toString(), 5))
     print("checking")
-    wolfram = "(int (" + func.toString() + ")) - (" + integral.toString() + ")"
+    wolfram = "(int (" + simplify(parse_expr(func.toString())) + ")) - (" + integral.toString() + ")"
     print( wolfram.replace(' ', ''))
 
-# IntFunctionTree.constructFunctionsForPartialInt( None, None, None )
-# u = parse_expr("(((10*x) + ((x**-5)))) / (((6) - ((x**-6))))")
-# u = manualintegrate( u, x )
-# for args in preorder_traversal(u):
-#     print(args)
-#     if isinstance( args, Integral ):
-#         print("yo")
-# print("done")
 
-# u = parse_expr( "1/(x**2-1)" )
-# u = manualintegrate( u, x )
-# print( u )
+# u = parse_expr("2 * (x + 5**(x-3))")
+# for arg in preorder_traversal(u):
+#     print( str(arg.func) == "<class 'sympy.core.add.Add'>")
+#     print("arg is: ", arg, " and func is: ", str(arg.func))
