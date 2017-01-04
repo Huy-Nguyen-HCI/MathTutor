@@ -43,7 +43,7 @@ class DiffFunctionTree(FunctionTree):
                 func = DiffProductionRules.getRandomElemFunction()
                 # move coefficients to avoid huge coefficient in (a*x)^b
                 if func == linear and leaf.getParent() is not None and leaf.getParent().getValue() == powerConst:
-                    moveCoefficients( leaf )
+                    self.moveCoefficients( leaf )
                 else:
                     leaf.setValue( func() )
 
@@ -75,7 +75,7 @@ class DiffFunctionTree(FunctionTree):
     #    a     ^
     #        /   \
     #       x     b
-    def moveCoefficients(leaf):
+    def moveCoefficients( self, leaf):
         leaf.setValue( buildFunction("x&", "1", True, True) )
         parent = leaf.getParent()
         grandparent = parent.getParent()

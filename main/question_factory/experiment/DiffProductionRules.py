@@ -60,10 +60,10 @@ class DiffProductionRules:
 
 	elemFunctions = {
 	    const : 5.0,
-	    # linear : 15.0,
+	    linear : 15.0,
 	    monomial: 10.0,
 	    constPower: 10.0,
-	    # sqrt : 4.0,
+	    sqrt : 4.0,
 	    # sin : 4.0,
 	    # cos : 4.0,
 	    # tan : 3.0,
@@ -94,9 +94,9 @@ class DiffProductionRules:
 	complexityMap = {
 		plus : 1,
 		minus : 1,
-		# powerConst: 1,
-		# times : 2,
-		# divide : 4,
-		# compose : 4,
-		# power : 8
+		powerConst: 1,
+		times : 2,
+		divide : 4,
+		compose : 4,
+		power : 8
 	}

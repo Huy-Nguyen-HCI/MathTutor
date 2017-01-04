@@ -1,4 +1,5 @@
 from random import choice, uniform, randint
+from fractions import gcd
 from Function import *
 
 ########## PRODUCTION RULES ######################
@@ -9,7 +10,7 @@ def plus( func1, func2 ):
 
     if func1.constant() and func2.constant():
         # output function is also a constant
-        function = Function( str( float(str1) + float(str2) ), True )
+        function = Function( str( int(str1) + int(str2) ), True )
     else:
         str1 = "(" + str1 + ")"
         str2 = "(" + str2 + ")"
@@ -24,7 +25,7 @@ def minus( func1, func2 ):
 
     if func1.constant() and func2.constant():
         # output function is also a constant
-        function = Function( str( float(str1) - float(str2) ), True )
+        function = Function( str( int(str1) - int(str2) ), True )
     else:
         str1 = "(" + str1 + ")"
         str2 = "(" + str2 + ")"
@@ -40,10 +41,10 @@ def times( func1, func2 ):
     if func1.constant():
         # output function is also a constant
         if func2.constant():
-            function = Function( str( float(str1) * float(str2) ), True )
+            function = Function( str( int(str1) * int(str2) ), True )
             return function
         # if func1 = 1, output is just func2
-        elif float( func1.getStringFunc() ) == 1:
+        elif int( func1.getStringFunc() ) == 1:
             return func2
 
     # if func2 is a constant, swap the 2 functions
@@ -65,9 +66,15 @@ def divide( func1, func2 ):
     if func2.constant():
         # output function is also a constant
         if func1.constant():
-            function = Function( str( float(str1) / float(str2) ), True )
-            return function
-        elif float( func2.getStringFunc() ) == 1:
+            # simplify func1 / func2 by dividing both by their gcd
+            a = int(str1)
+            b = int(str2)
+            g = gcd(a,b)
+            # wrap by int() because in python 3, division returns decimal
+            a = int(a/g)
+            b = int(b/g)
+            return Function( str(a) + "/" + str(b), True )
+        elif int( func2.getStringFunc() ) == 1:
             return func1
 
     str1 = "(" + str1 + ")"

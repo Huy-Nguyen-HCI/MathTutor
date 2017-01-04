@@ -61,6 +61,23 @@ class Function:
 	def evaluate(self, funcString, number):
 		return N(parse_expr(funcString).subs(symbols("x"),  number))
 
+
+	@classmethod
+	def isAcceptable( cls, expression):
+		complexity = 0
+		for args in preorder_traversal( expression ):
+			# must be integrable
+			if isinstance(args, Integral) or str(args) == "zoo" or str(arg) == "inf":
+				return False
+
+			# must not be too complex
+			complexity += cls.getOperatorComplexity( arg.func )
+			if complexity >= complexityBound:
+				return False
+
+			# must have valid coefficients
+
+
 	@classmethod
 	def isIntegrable( cls, expression):
 		for args in preorder_traversal(expression):

@@ -61,6 +61,8 @@ class IntFunctionTree(FunctionTree):
             uDerivative = divide( h, v )
             u = manualintegrate( parse_expr( uDerivative.toString() ), x )
             print("generated h: ", h.toString())
+            print("generated v: ", v.toString())
+            print()
 
             if not Function.isIntegrable( u ) or not Function.meetsComplexityBound( u, 40 ):
                 continue
